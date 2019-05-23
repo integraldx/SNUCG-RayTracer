@@ -10,6 +10,7 @@ namespace snucg
     {
     private:
     public:  
-        std::vector<Object> objects;
+        std::vector<std::shared_ptr<Object>> objects;
+        std::vector<std::shared_ptr<Object>> lights;
     };
 }

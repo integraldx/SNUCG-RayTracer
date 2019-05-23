@@ -12,11 +12,20 @@ namespace snucg
     class Camera
     {
     private:
-        float fieldOfView;
+        float fieldOfView = 60;
         Vector3f position;
-        Quaternion rotation;
+        Quaternion rotation = {1, 0, 0, 0};
+
     public:
         png::image<png::rgb_pixel> evaluateImage(int width, int height, Scene sc);
         Vector3f rayCast(Vector3f origin, Vector3f direction, Scene sc);
+
+        void SetPosition(Vector3f newPos);
+
+        Vector3f GetPosition();
+
+        void SetRotation(Quaternion newRot);
+
+        Quaternion GetRotation();
     };
 }

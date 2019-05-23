@@ -20,6 +20,7 @@ namespace snucg
     struct RayCastResult
     {
         bool collision;
-        Polygon polygon;
+        Vector3f position;
+        Vector3f normal;
     };
 }
