@@ -31,9 +31,10 @@ namespace snucg
     Vector3f Camera::rayCast(Vector3f position, Vector3f direction, Scene sc)
     {
         RayCastResult res = {false};
-        for (auto a : sc.objects)
+        Vector3f color = {0, 0, 0};
+        for (auto i : sc.objects)
         {
-            auto temp = a->GetRayCastResult(position, direction);
+            auto temp = i->GetRayCastResult(position, direction);
             if (temp.collision)
             {
                 if (res.collision)
@@ -46,17 +47,20 @@ namespace snucg
                 else
                 {
                     res = temp;
+                    for (auto j : sc.lights)
+                    {
+                        auto lightPosition = j->GetPosition();
+                        auto irradiance = dotProduct(normalize(lightPosition - res.position), res.normal);
+                        if (irradiance < 0)
+                        {
+                            irradiance = 0;
+                        }
+                        color = Vector3f{1, 1, 1} * irradiance;
+                    }
                 }
             }
         }
 
-        if (res.collision)
-        {
-            return Vector3f{1, 1, 1};
-        }
-        else
-        {
-            return Vector3f{0, 0, 0};
-        }
+        return color;
     }
 }

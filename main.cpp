@@ -24,6 +24,8 @@ int main()
 
     Scene sc;
     sc.objects.push_back(make_shared<Sphere>(1));
+    sc.lights.push_back(make_shared<Sphere>(1));
+    sc.lights[0]->SetPosition({10, 10, 10});
     Camera cam;
     cam.SetPosition({0, 0, 10});
     auto i = cam.evaluateImage(1920, 1080, sc);

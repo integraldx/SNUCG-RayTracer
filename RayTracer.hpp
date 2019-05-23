@@ -3,6 +3,8 @@
 
 namespace snucg
 {
+    const float epsilon = 0.0001;
+
     struct Vertex
     {
         Vector3f position;
