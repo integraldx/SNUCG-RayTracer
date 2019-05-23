@@ -34,3 +34,6 @@
 # VSCode peripherals
 .vscode
 *.code-workspace
+
+# Project results
+*.png
