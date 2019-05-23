@@ -1,6 +1,6 @@
 main: *.cpp
-	g++ -c main.cpp `libpng-config --cflags`
-	g++ -o main.out main.o `libpng-config --ldflags`
+	g++ -c *.cpp `libpng-config --cflags`
+	g++ -o main.out *.o `libpng-config --ldflags`
 
 run: 
 	make main
