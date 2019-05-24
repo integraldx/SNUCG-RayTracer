@@ -31,7 +31,7 @@ namespace snucg
     Vector3f Camera::rayCast(Vector3f position, Vector3f direction, Scene sc)
     {
         RayCastResult res = {false};
-        Vector3f color = {0, 0, 0};
+        Vector4f color = {0, 0, 0};
         for (auto i : sc.objects)
         {
             auto temp = i->GetRayCastResult(position, direction);
@@ -55,12 +55,12 @@ namespace snucg
                         {
                             irradiance = 0;
                         }
-                        color = Vector3f{1, 1, 1} * irradiance;
+                        color = i->GetMaterial(0).diffuse * irradiance;
                     }
                 }
             }
         }
 
-        return color;
+        return Vector3f{color.x, color.y, color.z};
     }
 }

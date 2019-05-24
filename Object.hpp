@@ -5,6 +5,7 @@
 #include "Vectorf.hpp"
 #include "RayTracer.hpp"
 #include "Quaternion.hpp"
+#include "Material.hpp"
 
 namespace snucg
 {
@@ -27,5 +28,6 @@ namespace snucg
         Quaternion GetRotation();
         void SetScale(Vector3f newScale);
         Vector3f GetScale();
+        virtual Material GetMaterial(int index) = 0;
     };
 }

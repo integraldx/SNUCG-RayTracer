@@ -3,8 +3,24 @@
 namespace snucg
 {
     Sphere::Sphere(float initialRadius)
+    : m(
+        {0.1, 0.1, 0.1, 1},
+        {0.4, 0.4, 1, 1},
+        {1, 1, 1, 1},
+        {0}
+    )
     {
         radius = initialRadius;
+    }
+
+    void Sphere::SetMaterial(Material newMaterial)
+    {
+        this->m = newMaterial;
+    }
+
+    Material Sphere::GetMaterial(int index)
+    {
+        return m;
     }
 
     RayCastResult Sphere::GetRayCastResult(Vector3f origin, Vector3f direction)

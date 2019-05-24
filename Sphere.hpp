@@ -3,6 +3,7 @@
 // Internal headers
 #include "Object.hpp"
 #include "RayTracer.hpp"
+#include "Material.hpp"
 
 namespace snucg
 {
@@ -10,8 +11,12 @@ namespace snucg
     {
         private:
         float radius;
+        Material m;
+
         public:
         Sphere(float initialRadius);
+        void SetMaterial(Material m);
+        Material GetMaterial(int index);
         RayCastResult GetRayCastResult(Vector3f origin, Vector3f direction);
     };
 }
