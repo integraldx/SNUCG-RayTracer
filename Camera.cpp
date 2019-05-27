@@ -14,13 +14,13 @@ namespace snucg
         {
             for (int j = 0; j < width; j += 1)
             {
-                auto castResult = rayCast(
+                auto castResult = sc.rayTrace(
                     position, 
                     normalize(rotateVector(rotation, Vector3f{
                         (float)(j - (width / 2)) * tanf(M_PI * fieldOfView / 360) / (width / 2),
                         (float)((height / 2) - i) * tanf(M_PI * fieldOfView / 360) / (width / 2),
                         -1})),
-                    sc);
+                        0);
                 resultImage[i][j] = png::rgb_pixel((int)(castResult.x * 255), (int)(castResult.y * 255), (int)(castResult.z * 255));
             }
         }
@@ -49,7 +49,7 @@ namespace snucg
                     res = temp;
                     for (auto j : sc.lights)
                     {
-                        auto lightPosition = j->GetPosition();
+                        auto lightPosition = j->getPosition();
                         auto irradiance = dotProduct(normalize(lightPosition - res.position), res.normal);
                         if (irradiance < 0)
                         {

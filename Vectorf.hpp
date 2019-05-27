@@ -3,6 +3,8 @@
 
 namespace snucg
 {
+    struct Vector4f;
+
     struct Vector2f
     {
         float x;
@@ -14,6 +16,8 @@ namespace snucg
         float x;
         float y;
         float z;
+
+        operator Vector4f();
     };
 
     struct Vector4f
