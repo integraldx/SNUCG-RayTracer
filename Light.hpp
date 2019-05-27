@@ -23,12 +23,13 @@ namespace snucg
         virtual Vector4f getSpecular() const = 0;
         virtual void setSpecular(const Vector4f& v) = 0;
 
-        static Vector4f phongShade(const float f, const Material& m, const std::shared_ptr<Light> l)
+        static Vector4f phongShade(const float diffuseValue, const float specularValue, const Material& m, const std::shared_ptr<Light> l)
         {
             Vector4f color = {0, 0, 0, 0};
 
             color = color + (m.ambient * l->getAmbient());
-            color = color + f * (m.diffuse * l->getDiffuse());
+            color = color + diffuseValue * (m.diffuse * l->getDiffuse());
+            color = color + ::pow(specularValue, m.shininess) * (m.specular * l->getSpecular());
 
             return color;
         }

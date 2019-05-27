@@ -6,6 +6,7 @@
 #include "Object.hpp"
 #include "Vectorf.hpp"
 #include "Quaternion.hpp"
+#include "RayTracer.hpp"
 
 namespace snucg
 {
@@ -18,7 +19,6 @@ namespace snucg
 
     public:
         png::image<png::rgb_pixel> evaluateImage(int width, int height, Scene sc);
-        Vector3f rayCast(Vector3f origin, Vector3f direction, Scene sc);
 
         void SetPosition(Vector3f newPos);
 

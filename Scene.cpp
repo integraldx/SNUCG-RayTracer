@@ -24,13 +24,19 @@ namespace snucg
                     for (auto j : lights)
                     {
                         auto lightPosition = j->getPosition();
+                        auto pointToOriginDirection = normalize(origin - res.position);
+                        auto pointToLightDirection = normalize(lightPosition - res.position);
+
                         auto irradiance = dotProduct(normalize(lightPosition - res.position), res.normal);
+                        auto reflectance = clampTo1(dotProduct(
+                            pointToOriginDirection, 
+                            2 * dotProduct(res.normal, pointToLightDirection) * res.normal - pointToLightDirection));
                         if (irradiance < 0)
                         {
                             irradiance = 0;
                         }
 
-                        color = color + Light::phongShade(irradiance, i->GetMaterial(0), j);
+                        color = color + Light::phongShade(irradiance, reflectance, i->GetMaterial(0), j);
                     }
                 }
             }

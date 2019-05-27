@@ -12,12 +12,12 @@ namespace snucg
             Vector4f ambient,
             Vector4f diffuse,
             Vector4f specular,
-            float roughness
+            float shininess
         );
         ~Material();
         Vector4f diffuse;
         Vector4f specular;
         Vector4f ambient;
-        float roughness;
+        float shininess;
     };
 }

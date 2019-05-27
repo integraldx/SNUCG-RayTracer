@@ -25,4 +25,8 @@ namespace snucg
         Vector3f position;
         Vector3f normal;
     };
+
+    int clampTo255(int i);
+
+    float clampTo1(float f);
 }
