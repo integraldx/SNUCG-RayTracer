@@ -1,10 +1,9 @@
-main: *.cpp
+raytracer: *.cpp *.hpp
 	g++ -c *.cpp `libpng-config --cflags`
-	g++ -o main.out *.o `libpng-config --ldflags`
+	g++ -o raytracer *.o `libpng-config --ldflags`
 
-run: 
-	make main
-	./main.out
+run: raytracer
+	./raytracer
 
 clean: 
-	rm -f *.o *.out *.png
+	rm -f *.o *.png raytracer
