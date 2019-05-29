@@ -11,12 +11,8 @@ namespace snucg
             auto temp = i->GetRayCastResult(origin, direction);
             if (temp.collision)
             {
-                if (res.collision)
+                if (res.collision && dotProduct(res.position - temp.position, direction) < 0)
                 {
-                    if (dotProduct(res.position - temp.position, direction) > 0)
-                    {
-                        res = temp;
-                    }
                 }
                 else
                 {
@@ -36,7 +32,7 @@ namespace snucg
                             irradiance = 0;
                         }
 
-                        color = color + Light::phongShade(irradiance, reflectance, i->GetMaterial(0), j);
+                        color = Light::phongShade(irradiance, reflectance, i->GetMaterial(0), j);
                     }
                 }
             }

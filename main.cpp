@@ -56,7 +56,7 @@ int main()
         );
         sc.objects.push_back(make_shared<MeshObject>(p));
     }
-    // sc.objects.push_back(make_shared<Sphere>(1));
+    sc.objects.push_back(make_shared<Sphere>(1));
     sc.lights.push_back(make_shared<PunctualLight>());
     sc.lights[0]->setPosition({10, 10, 10});
     sc.lights[0]->setAmbient({1, 1, 1, 1});
