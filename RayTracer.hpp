@@ -29,4 +29,6 @@ namespace snucg
     int clampTo255(int i);
 
     float clampTo1(float f);
+
+    Vector3f calculateBarycentric(const Polygon p, const Vector3f target);
 }
