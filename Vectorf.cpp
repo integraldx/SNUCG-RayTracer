@@ -12,6 +12,11 @@ namespace snucg
         return mul * v;
     }
 
+    Vector3f operator * (const Vector3f left, const Vector3f right)
+    {
+        return {left.x * right.x, left.y * right.y, left.z * right.z};
+    }
+
     float dotProduct(const Vector3f left, const Vector3f right)
     {
         return (left.x * right.x + left.y * right.y + left.z * right.z);

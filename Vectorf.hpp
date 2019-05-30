@@ -45,7 +45,8 @@ namespace snucg
     Vector3f operator * (const float mul, const Vector3f v);
 
     Vector3f operator * (const Vector3f v, const float mul);
-    
+
+    Vector3f operator * (const Vector3f left, const Vector3f right);
 
     float dotProduct(const Vector3f left, const Vector3f right);
 

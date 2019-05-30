@@ -35,6 +35,8 @@ Material MeshObject::GetMaterial(int index)
 
 RayCastResult MeshObject::GetRayCastResult(Vector3f origin, Vector3f direction)
 {
+    origin = rotateVector(inverse(GetRotation()), origin - GetPosition()) * Vector3f{1 / GetScale().x, 1 / GetScale().y, 1 / GetScale().z};
+    direction = rotateVector(inverse(GetRotation()), direction);
     RayCastResult result = {false};
     float leastT = 9999999999999999;
     {
@@ -62,7 +64,7 @@ RayCastResult MeshObject::GetRayCastResult(Vector3f origin, Vector3f direction)
         }
 
         result.collision = true;
-        result.position = collisionPosition;
+        result.position = rotateVector(GetRotation(), collisionPosition * GetScale()) + GetPosition();
         result.normal = p.first.normal * baryCentric.x + p.second.normal * baryCentric.y + p.third.normal * baryCentric.z;
         leastT = t;
     }
