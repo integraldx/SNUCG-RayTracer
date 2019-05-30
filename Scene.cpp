@@ -2,7 +2,7 @@
 
 namespace snucg
 {
-    Vector4f Scene::rayTrace(Vector3f origin, Vector3f direction, unsigned int recursionDepth)
+    Vector4f Scene::rayTrace(Vector3f origin, Vector3f direction, unsigned int recursionDepth) const
     {
         RayCastResult res = {false};
         Vector4f color = {0, 0, 0};

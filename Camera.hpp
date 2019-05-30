@@ -1,6 +1,10 @@
 #pragma once
 // std, external library
 #include <png++/png.hpp>
+#include <iostream>
+#include <iomanip>
+#include <thread>
+#include <future>
 // internal headers
 #include "Scene.hpp"
 #include "Object.hpp"
@@ -19,6 +23,7 @@ namespace snucg
 
     public:
         png::image<png::rgb_pixel> evaluateImage(int width, int height, Scene sc);
+        void writePixel(png::image<png::rgb_pixel>& image, int i, int j, const Scene& sc);
 
         void SetPosition(Vector3f newPos);
 
