@@ -16,7 +16,7 @@ namespace snucg
         m = newMaterial;
     }
 
-    Material Sphere::GetMaterial(float u, float v)
+    Material Sphere::GetMaterial(int index, float u, float v)
     {
         return m;
     }

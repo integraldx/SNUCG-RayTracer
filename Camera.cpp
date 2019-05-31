@@ -33,7 +33,7 @@ namespace snucg
                 auto castResult = a.second.get();
                 resultImage[a.first.first][a.first.second] = png::rgb_pixel(clampTo255((int)(castResult.x * 255)), clampTo255((int)(castResult.y * 255)), clampTo255((int)(castResult.z * 255)));
             }
-            // std::cout << (float)(i * width) / (height * width) * 100 << "%" << std::endl;
+            std::cout << (float)(i * width) / (height * width) * 100 << "%" << std::endl;
         }
 
         return resultImage;

@@ -28,6 +28,6 @@ namespace snucg
         Quaternion GetRotation();
         void SetScale(Vector3f newScale);
         Vector3f GetScale();
-        virtual Material GetMaterial(float u, float v) = 0;
+        virtual Material GetMaterial(int index, float u, float v) = 0;
     };
 }

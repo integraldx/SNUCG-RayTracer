@@ -3,7 +3,7 @@
 
 namespace snucg
 {
-    const float epsilon = 0.0001;
+    const float epsilon = 0.00001;
 
     struct Vertex
     {
@@ -14,6 +14,7 @@ namespace snucg
 
     struct Polygon
     {
+        int materialIndex;
         Vertex first;
         Vertex second;
         Vertex third;
@@ -22,6 +23,7 @@ namespace snucg
     struct RayCastResult
     {
         bool collision;
+        int materialIndex;
         Vector3f position;
         Vector3f normal;
         Vector2f uv;

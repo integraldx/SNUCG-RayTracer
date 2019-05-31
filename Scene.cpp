@@ -6,35 +6,34 @@ namespace snucg
     {
         RayCastResult res = {false};
         Vector4f color = {0, 0, 0};
+        std::shared_ptr<Object> o;
         for (auto i : objects)
         {
             auto temp = i->GetRayCastResult(origin, direction);
+
             if (temp.collision)
             {
-                if (res.collision && dotProduct(res.position - temp.position, direction) < 0)
-                {
-                }
-                else
+                if (!res.collision || dotProduct(res.position - temp.position, direction) < 0)
                 {
                     res = temp;
-                    for (auto j : lights)
-                    {
-                        auto lightPosition = j->getPosition();
-                        auto pointToOriginDirection = normalize(origin - res.position);
-                        auto pointToLightDirection = normalize(lightPosition - res.position);
-
-                        auto irradiance = dotProduct(normalize(lightPosition - res.position), res.normal);
-                        auto reflectance = clampTo1(dotProduct(
-                            pointToOriginDirection, 
-                            2 * dotProduct(res.normal, pointToLightDirection) * res.normal - pointToLightDirection));
-                        if (irradiance < 0)
-                        {
-                            irradiance = 0;
-                        }
-
-                        color = Light::phongShade(irradiance, reflectance, i->GetMaterial(res.uv.x, res.uv.y), j);
-                    }
+                    o = i;
                 }
+            }
+        }
+        if (res.collision)
+        {
+            for (auto j : lights)
+            {
+                auto lightPosition = j->getPosition();
+                auto pointToOriginDirection = normalize(origin - res.position);
+                auto pointToLightDirection = normalize(lightPosition - res.position);
+
+                auto irradiance = clampTo1(dotProduct(pointToLightDirection, res.normal));
+                auto reflectance = clampTo1(dotProduct(
+                    pointToOriginDirection, 
+                    2 * dotProduct(res.normal, pointToLightDirection) * res.normal - pointToLightDirection));
+
+                color = color + Light::phongShade(irradiance, reflectance, o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y), j);
             }
         }
         return Vector4f{color.x, color.y, color.z, 1};

@@ -8,8 +8,8 @@ MeshObject::MeshObject()
 
 }
 
-MeshObject::MeshObject(std::vector<Polygon> mesh)
-: mesh(mesh)
+MeshObject::MeshObject(std::vector<Polygon> mesh, std::vector<Texture> textures)
+: mesh(mesh), textures(textures)
 {
     // for (auto a : mesh)
     // {
@@ -22,12 +22,10 @@ MeshObject::MeshObject(std::vector<Polygon> mesh)
     // printf("%f\n", bubbleRadius);
 }
 
-Material MeshObject::GetMaterial(float u, float v)
+Material MeshObject::GetMaterial(int index, float u, float v)
 {
-    printf("%f, %f\n", u, v);
     Material m;
-    m.diffuse = texture.getColorFromUV(u, v);
-    printf("%f, %f, %f, %f\n", m.diffuse.x, m.diffuse.y, m.diffuse.z, m.diffuse.w);
+    m.diffuse = textures[index].getColorFromUV(u, v);
     m.specular = {0.1, 0.1, 0.1, 1};
     m.ambient = {0, 0, 0, 1};
     m.shininess = 10.0;
@@ -37,45 +35,47 @@ Material MeshObject::GetMaterial(float u, float v)
 
 RayCastResult MeshObject::GetRayCastResult(Vector3f origin, Vector3f direction)
 {
-    origin = rotateVector(inverse(GetRotation()), origin - GetPosition()) * Vector3f{1 / GetScale().x, 1 / GetScale().y, 1 / GetScale().z};
-    direction = rotateVector(inverse(GetRotation()), direction);
+    Vector3f tempOrigin = rotateVector(inverse(GetRotation()), origin - GetPosition()) * Vector3f{1 / GetScale().x, 1 / GetScale().y, 1 / GetScale().z};
+    Vector3f tempDirection = rotateVector(inverse(GetRotation()), direction);
+    // Vector3f tempOrigin = origin;
+    // Vector3f tempDirection = direction;
     RayCastResult result = {false};
-    float leastT = 9999999999999999;
-    {
-        float shortestT = dotProduct(GetPosition() - origin, direction) / getScale(direction);
-        float distance = getScale(origin + (direction * shortestT) - GetPosition());
-        if (distance > bubbleRadius)
-        {
-            return RayCastResult{false};
-        }
-    }
+    float leastT = 999999.0f;
+    // {
+    //     float shortestT = dotProduct(GetPosition() - origin, direction) / getScale(direction);
+    //     float distance = getScale(origin + (direction * shortestT) - GetPosition());
+    //     if (distance > bubbleRadius)
+    //     {
+    //         return RayCastResult{false};
+    //     }
+    // }
     for (Polygon p : mesh)
     {
         Vector3f polygonNormal = normalize(crossProduct(p.second.position - p.first.position, p.third.position - p.first.position));
-        float t = dotProduct(polygonNormal, p.first.position - origin) / dotProduct(direction, polygonNormal);
-        if (isnan(t) || t < epsilon || t > leastT)
+        float t = dotProduct(p.first.position - tempOrigin, polygonNormal) / dotProduct(tempDirection, polygonNormal);
+        if (epsilon < t && t < leastT)
         {
-            continue;
-        }
-        Vector3f collisionPosition = origin + direction * t;
-        Vector3f baryCentric = calculateBarycentric(p, collisionPosition);
+            Vector3f collisionPosition = tempOrigin + tempDirection * t;
+            Vector3f baryCentric = calculateBarycentric(p, collisionPosition);
 
-        if (baryCentric.x < 0 || baryCentric.y < 0 || baryCentric.z < 0)
-        {
-            continue;
-        }
+            if (abs(baryCentric.x + baryCentric.y + baryCentric.z - 1) < epsilon)
+            {
+                if (getScale((p.first.position * baryCentric.x + p.second.position * baryCentric.y + p.third.position * baryCentric.z) - collisionPosition) > 0.001)
+                {
+                    printf("something's wrong\n");
+                }
 
-        result.collision = true;
-        result.position = rotateVector(GetRotation(), collisionPosition * GetScale()) + GetPosition();
-        result.normal = p.first.normal * baryCentric.x + p.second.normal * baryCentric.y + p.third.normal * baryCentric.z;
-        result.uv = p.first.uv * baryCentric.x + p.second.uv * baryCentric.y + p.third.uv * baryCentric.z;
-        leastT = t;
+                result.collision = true;
+                // result.position = collisionPosition;
+                // result.normal = p.first.normal * baryCentric.x + p.second.normal * baryCentric.y + p.third.normal * baryCentric.z;
+                result.position = rotateVector(GetRotation(), collisionPosition * GetScale()) + GetPosition();
+                result.normal = rotateVector(GetRotation(), p.first.normal * baryCentric.x + p.second.normal * baryCentric.y + p.third.normal * baryCentric.z);
+                result.materialIndex = p.materialIndex;
+                result.uv = p.first.uv * baryCentric.x + p.second.uv * baryCentric.y + p.third.uv * baryCentric.z;
+                leastT = t;
+            }
+        }
     }
 
     return result;
-}
-
-void MeshObject::SetTexture(Texture t)
-{
-    texture = t;
 }

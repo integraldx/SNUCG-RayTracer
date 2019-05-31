@@ -24,7 +24,7 @@ namespace snucg
 
     Vector3f operator * (const Vector3f v, const float mul)
     {
-        return mul * v;
+        return {v.x * mul, v.y * mul, v.z * mul};
     }
 
     Vector3f operator * (const Vector3f left, const Vector3f right)
@@ -59,7 +59,7 @@ namespace snucg
 
     float getScale(const Vector3f v)
     {
-        return sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
+        return pow(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2), 0.5);
     }
 
     Vector3f normalize(const Vector3f v)
