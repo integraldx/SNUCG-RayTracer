@@ -2,6 +2,21 @@
 
 namespace snucg
 {
+    Vector2f operator + (const Vector2f left, const Vector2f right)
+    {
+        return {left.x + right.x, left.y + right.y};
+    }
+
+    Vector2f operator * (const float f, const Vector2f v)
+    {
+        return {v.x * f, v.y * f};
+    }
+
+    Vector2f operator * (const Vector2f v, const float f)
+    {
+        return {v.x * f, v.y * f};
+    }
+
     Vector3f operator * (const float mul, const Vector3f v)
     {
         return {v.x * mul, v.y * mul, v.z * mul};

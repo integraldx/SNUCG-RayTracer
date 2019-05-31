@@ -24,6 +24,7 @@ namespace snucg
         bool collision;
         Vector3f position;
         Vector3f normal;
+        Vector2f uv;
     };
 
     int clampTo255(int i);

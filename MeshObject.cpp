@@ -22,11 +22,13 @@ MeshObject::MeshObject(std::vector<Polygon> mesh)
     // printf("%f\n", bubbleRadius);
 }
 
-Material MeshObject::GetMaterial(int index)
+Material MeshObject::GetMaterial(float u, float v)
 {
+    printf("%f, %f\n", u, v);
     Material m;
-    m.diffuse = {0.8, 0.8, 1, 1};
-    m.specular = {1, 1, 1, 1};
+    m.diffuse = texture.getColorFromUV(u, v);
+    printf("%f, %f, %f, %f\n", m.diffuse.x, m.diffuse.y, m.diffuse.z, m.diffuse.w);
+    m.specular = {0.1, 0.1, 0.1, 1};
     m.ambient = {0, 0, 0, 1};
     m.shininess = 10.0;
 
@@ -66,8 +68,14 @@ RayCastResult MeshObject::GetRayCastResult(Vector3f origin, Vector3f direction)
         result.collision = true;
         result.position = rotateVector(GetRotation(), collisionPosition * GetScale()) + GetPosition();
         result.normal = p.first.normal * baryCentric.x + p.second.normal * baryCentric.y + p.third.normal * baryCentric.z;
+        result.uv = p.first.uv * baryCentric.x + p.second.uv * baryCentric.y + p.third.uv * baryCentric.z;
         leastT = t;
     }
 
     return result;
+}
+
+void MeshObject::SetTexture(Texture t)
+{
+    texture = t;
 }

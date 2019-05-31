@@ -16,7 +16,7 @@ namespace snucg
         public:
         Sphere(float initialRadius);
         void SetMaterial(Material m);
-        Material GetMaterial(int index);
+        Material GetMaterial(float u, float v) override;
         RayCastResult GetRayCastResult(Vector3f origin, Vector3f direction);
     };
 }

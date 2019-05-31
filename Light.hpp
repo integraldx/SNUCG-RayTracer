@@ -31,6 +31,7 @@ namespace snucg
             color = color + diffuseValue * (m.diffuse * l->getDiffuse());
             color = color + ::pow(specularValue, m.shininess) * (m.specular * l->getSpecular());
 
+
             return color;
         }
     };

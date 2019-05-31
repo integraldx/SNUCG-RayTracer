@@ -32,7 +32,7 @@ namespace snucg
                             irradiance = 0;
                         }
 
-                        color = Light::phongShade(irradiance, reflectance, i->GetMaterial(0), j);
+                        color = Light::phongShade(irradiance, reflectance, i->GetMaterial(res.uv.x, res.uv.y), j);
                     }
                 }
             }

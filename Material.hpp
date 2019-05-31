@@ -4,20 +4,11 @@
 
 namespace snucg
 {
-    class Material
+    struct Material
     {
-        public:
-        Material();
-        Material(
-            Vector4f ambient,
-            Vector4f diffuse,
-            Vector4f specular,
-            float shininess
-        );
-        ~Material();
+        Vector4f ambient;
         Vector4f diffuse;
         Vector4f specular;
-        Vector4f ambient;
         float shininess;
     };
 }
