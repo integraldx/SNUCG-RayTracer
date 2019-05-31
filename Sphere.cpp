@@ -1,12 +1,13 @@
 #include "Sphere.hpp"
+#include <iostream>
 
 namespace snucg
 {
     Sphere::Sphere(float initialRadius)
     {
         m = {{0.3, 0.3, 0.3, 1},
-            {0.4, 0.4, 1, 1},
-            {0.7, 0.7, 0.7, 1},
+            {0.3, 0.3, 0.3, 1},
+            {0.5, 0.5, 0.5, 1},
             10};
         radius = initialRadius;
     }
@@ -23,21 +24,24 @@ namespace snucg
 
     RayCastResult Sphere::GetRayCastResult(Vector3f origin, Vector3f direction)
     {
-        origin = origin - GetPosition();
-        float shortestT = dotProduct(GetPosition() - origin, direction) / getScale(direction);
-        float distance = getScale(origin + (direction * shortestT) - GetPosition());
-        if (distance > radius)
+        auto newOrigin = origin;
+        auto newDirection = direction;
+        float shortestT = dotProduct(GetPosition() - newOrigin, newDirection);
+        float distance = getScale(newOrigin + (newDirection * shortestT) - GetPosition());
+        float interval = ::pow(::pow(radius, 2) - ::pow(distance, 2), 0.5);
+        float t = shortestT - interval;
+        if (distance > radius || t < epsilon)
         {
             return RayCastResult{false};
         }
         else
         {
             RayCastResult res;
-            float interval = sqrt(::pow(radius, 2) - ::pow(distance, 2));
-            float lessT = interval / getScale(direction);
             res.collision = true;
-            res.position = origin + direction * (shortestT - lessT) + GetPosition();
+            res.materialIndex = 0;
+            res.position = origin + direction * t;
             res.normal = normalize(res.position - GetPosition());
+            // ::std::cout << res.normal.x << ", " << res.normal.y << ", " << res.normal.z << ::std::endl;
             res.uv = {0, 0};
             return res;
         }

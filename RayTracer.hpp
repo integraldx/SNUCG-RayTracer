@@ -3,7 +3,7 @@
 
 namespace snucg
 {
-    const float epsilon = 0.00001;
+    const float epsilon = 0.001;
 
     struct Vertex
     {

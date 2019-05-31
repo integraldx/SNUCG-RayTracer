@@ -4,8 +4,12 @@ namespace snucg
 {
     Vector4f Scene::rayTrace(Vector3f origin, Vector3f direction, unsigned int recursionDepth) const
     {
+        if (recursionDepth > 10)
+        {
+            return {0, 0, 0, 1};
+        }
         RayCastResult res = {false};
-        Vector4f color = {0, 0, 0};
+        Vector4f color = {0, 0, 0, 1};
         std::shared_ptr<Object> o;
         for (auto i : objects)
         {
@@ -13,7 +17,7 @@ namespace snucg
 
             if (temp.collision)
             {
-                if (!res.collision || dotProduct(res.position - temp.position, direction) < 0)
+                if (!res.collision || dotProduct(res.position - temp.position, direction) > 0)
                 {
                     res = temp;
                     o = i;
@@ -22,6 +26,10 @@ namespace snucg
         }
         if (res.collision)
         {
+            // color = {0.1, 0.1, 0.1, 1};
+            auto pointToOriginDirection = normalize(origin - res.position);
+            auto refl = rayTrace(res.position, 2 * dotProduct(res.normal, pointToOriginDirection) * res.normal - pointToOriginDirection, recursionDepth + 1);
+            color = color + (refl * o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y).specular);
             for (auto j : lights)
             {
                 auto lightPosition = j->getPosition();

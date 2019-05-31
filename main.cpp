@@ -15,9 +15,9 @@ using namespace snucg;
 int main()
 {
     Scene sc;
-    sc.objects.push_back(parseObj("Scene/kizunaai/kizunaai.obj"));
-    sc.objects[0]->SetPosition({0, -10, 0});
-    sc.objects[0]->SetRotation(expToQuat(M_PI, {0, 1, 0}));
+    sc.objects.push_back(parseObj("Scene/Test/test.obj"));
+    sc.objects[0]->SetPosition({-2, 0, 2});
+    sc.objects[0]->SetRotation(expToQuat(M_PI * 0.75, {0, 1, 0}));
     // {
     //     vector<Polygon> pv;
     //     {
@@ -68,15 +68,23 @@ int main()
     //     sc.objects.push_back(obj);
     //     sc.objects[0]->SetPosition({0, 0, 3});
     // }
-    // sc.objects.push_back(make_shared<Sphere>(1));
+    sc.objects.push_back(make_shared<Sphere>(1));
+    sc.objects.push_back(make_shared<Sphere>(1));
+    sc.objects.at(1)->SetPosition({1, 1, -1});
+    dynamic_pointer_cast<Sphere>(sc.objects.at(2))->SetMaterial({{0.3, 0.3, 0.3, 1}, {0.8, 0.4, 0.4, 1}, {0.8, 0.8, 0.8, 1}, 10});
     sc.lights.push_back(make_shared<PunctualLight>());
-    sc.lights[0]->setPosition({10, 10, 10});
+    sc.lights[0]->setPosition({10, 10, 0});
     sc.lights[0]->setAmbient({0.3, 0.3, 0.3, 1});
     sc.lights[0]->setDiffuse({1, 1, 1, 1});
     sc.lights[0]->setSpecular({0.8, 0.8, 0.8, 1});
+    sc.lights.push_back(make_shared<PunctualLight>());
+    sc.lights[1]->setPosition({10, 10, 0});
+    sc.lights[1]->setAmbient({0.3, 0.3, 0.3, 1});
+    sc.lights[1]->setDiffuse({1, 1, 1, 1});
+    sc.lights[1]->setSpecular({0.8, 0.8, 0.8, 1});
     Camera cam;
     cam.SetPosition({0, 0, 10});
-    auto i = cam.evaluateImage(100, 200, sc);
+    auto i = cam.evaluateImage(2000, 2000, sc);
     i.write("result.png");
     return 0;
 }
