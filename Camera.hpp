@@ -4,6 +4,8 @@
 #include <iostream>
 #include <iomanip>
 #include <thread>
+#include <time.h>
+#include <chrono>
 #include <future>
 // internal headers
 #include "Scene.hpp"
@@ -17,7 +19,7 @@ namespace snucg
     class Camera
     {
     private:
-        float fieldOfView = 60;
+        float fieldOfView = 75;
         Vector3f position;
         Quaternion rotation = {1, 0, 0, 0};
 

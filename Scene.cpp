@@ -28,8 +28,11 @@ namespace snucg
         {
             // color = {0.1, 0.1, 0.1, 1};
             auto pointToOriginDirection = normalize(origin - res.position);
-            auto refl = rayTrace(res.position, 2 * dotProduct(res.normal, pointToOriginDirection) * res.normal - pointToOriginDirection, recursionDepth + 1);
-            color = color + (refl * o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y).specular);
+            if (getScale(o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y).specular) > 3 * epsilon)
+            {
+                auto refl = rayTrace(res.position, 2 * dotProduct(res.normal, pointToOriginDirection) * res.normal - pointToOriginDirection, recursionDepth + 1);
+                color = color + (refl * o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y).specular);
+            }
             for (auto j : lights)
             {
                 auto lightPosition = j->getPosition();

@@ -24,11 +24,7 @@ MeshObject::MeshObject(std::vector<Polygon> mesh, std::vector<Texture> textures)
 
 Material MeshObject::GetMaterial(int index, float u, float v)
 {
-    Material m;
-    m.diffuse = textures[index].getColorFromUV(u, v);
-    m.specular = {0.1, 0.1, 0.1, 1};
-    m.ambient = {0, 0, 0, 1};
-    m.shininess = 10.0;
+    Material m = textures[index].getMaterialFromUV(u, v);
 
     return m;
 }
@@ -60,10 +56,10 @@ RayCastResult MeshObject::GetRayCastResult(Vector3f origin, Vector3f direction)
 
             if (abs(baryCentric.x + baryCentric.y + baryCentric.z - 1) < epsilon)
             {
-                if (getScale((p.first.position * baryCentric.x + p.second.position * baryCentric.y + p.third.position * baryCentric.z) - collisionPosition) > 0.001)
-                {
-                    printf("something's wrong\n");
-                }
+                // if (getScale((p.first.position * baryCentric.x + p.second.position * baryCentric.y + p.third.position * baryCentric.z) - collisionPosition) > 0.001)
+                // {
+                //     printf("something's wrong\n");
+                // }
 
                 result.collision = true;
                 // result.position = collisionPosition;

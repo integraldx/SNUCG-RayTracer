@@ -43,6 +43,7 @@ Material Texture::getMaterialFromUV(float u, float v)
     Material m;
     m.ambient = ambient;
     m.diffuse = diffuse * getColorFromUV(u, v);
+    // printf("%f, %f, %f\n", m.diffuse.x, m.diffuse.y, m.diffuse.z);
     m.specular = specular;
     m.shininess = shininess;
     return m;

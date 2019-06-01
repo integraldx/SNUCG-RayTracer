@@ -40,30 +40,30 @@ namespace snucg
             }
             else if (command.compare("Ka") == 0)
             {
-                float f[4];
-                for (int i = 0; i < 4; i++)
+                float f[3];
+                for (int i = 0; i < 3; i++)
                 {
                     ss >> f[i];
                 }
-                texVector.at(nameMap.at(matName)).setAmbient({f[0], f[1], f[2], f[3]});
+                texVector.at(nameMap.at(matName)).setAmbient({f[0], f[1], f[2], 1});
             }
             else if (command.compare("Kd") == 0)
             {
-                float f[4];
-                for (int i = 0; i < 4; i++)
+                float f[3];
+                for (int i = 0; i < 3; i++)
                 {
                     ss >> f[i];
                 }
-                texVector.at(nameMap.at(matName)).setDiffuse({f[0], f[1], f[2], f[3]});
+                texVector.at(nameMap.at(matName)).setDiffuse({f[0], f[1], f[2], 1});
             }
             else if (command.compare("Ks") == 0)
             {
-                float f[4];
-                for (int i = 0; i < 4; i++)
+                float f[3];
+                for (int i = 0; i < 3; i++)
                 {
                     ss >> f[i];
                 }
-                texVector.at(nameMap.at(matName)).setSpecular({f[0], f[1], f[2], f[3]});
+                texVector.at(nameMap.at(matName)).setSpecular({f[0], f[1], f[2], 1});
             }
             else if (command.compare("Ns") == 0)
             {
