@@ -30,12 +30,12 @@ namespace snucg
             if (command.compare("newmtl") == 0)
             {
                 ss >> matName;
+                nameMap.insert(make_pair(matName, texVector.size()));
             }
             else if (command.compare("map_Kd") == 0)
             {
                 string texName;
                 ss >> texName;
-                nameMap.insert(make_pair(matName, texVector.size()));
                 texVector.push_back(Texture::textureFromPng(baseFolder + texName));
             }
             else if (command.compare("Ka") == 0)
@@ -72,6 +72,7 @@ namespace snucg
                 texVector.at(nameMap.at(matName)).setShininess(f);
             }
         }
+        cout << "MTL parsing done" << endl;
         return make_pair(nameMap, texVector);
     }
 

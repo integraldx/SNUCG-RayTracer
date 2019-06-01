@@ -21,7 +21,7 @@ namespace snucg
         ~Object();
 
     public:
-        virtual RayCastResult GetRayCastResult(Vector3f origin, Vector3f direction) = 0;
+        virtual RayCastResult GetRayCastResult(Vector3f origin, Vector3f direction, float minT) = 0;
         void SetPosition(Vector3f newPos);
         Vector3f GetPosition();
         void SetRotation(Quaternion newRot);

@@ -22,7 +22,7 @@ namespace snucg
         return m;
     }
 
-    RayCastResult Sphere::GetRayCastResult(Vector3f origin, Vector3f direction)
+    RayCastResult Sphere::GetRayCastResult(Vector3f origin, Vector3f direction, float minT)
     {
         auto newOrigin = origin;
         auto newDirection = direction;
@@ -30,7 +30,7 @@ namespace snucg
         float distance = getScale(newOrigin + (newDirection * shortestT) - GetPosition());
         float interval = ::pow(::pow(radius, 2) - ::pow(distance, 2), 0.5);
         float t = shortestT - interval;
-        if (distance > radius || t < epsilon)
+        if (distance > radius || t < epsilon || t > minT)
         {
             return RayCastResult{false};
         }
@@ -39,6 +39,7 @@ namespace snucg
             RayCastResult res;
             res.collision = true;
             res.materialIndex = 0;
+            res.t = t;
             res.position = origin + direction * t;
             res.normal = normalize(res.position - GetPosition());
             // ::std::cout << res.normal.x << ", " << res.normal.y << ", " << res.normal.z << ::std::endl;

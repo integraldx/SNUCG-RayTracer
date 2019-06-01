@@ -13,15 +13,12 @@ namespace snucg
         std::shared_ptr<Object> o;
         for (auto i : objects)
         {
-            auto temp = i->GetRayCastResult(origin, direction);
+            auto temp = i->GetRayCastResult(origin, direction, (res.collision ? res.t : 9999999));
 
             if (temp.collision)
             {
-                if (!res.collision || dotProduct(res.position - temp.position, direction) > 0)
-                {
-                    res = temp;
-                    o = i;
-                }
+                res = temp;
+                o = i;
             }
         }
         if (res.collision)

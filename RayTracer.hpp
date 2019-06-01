@@ -24,6 +24,7 @@ namespace snucg
     {
         bool collision;
         int materialIndex;
+        float t;
         Vector3f position;
         Vector3f normal;
         Vector2f uv;

@@ -21,7 +21,7 @@ namespace snucg
         MeshObject();
         MeshObject(std::vector<Polygon> mesh, std::vector<Texture> textures);
         Material GetMaterial(int index, float u, float v) override;
-        RayCastResult GetRayCastResult(Vector3f origin, Vector3f direction) override;
-        void SetTexture(Texture t);
+        RayCastResult GetRayCastResult(Vector3f origin, Vector3f direction, float minT) override;
+        bool translucent = true;
     };
 }
