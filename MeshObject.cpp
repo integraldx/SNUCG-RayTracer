@@ -80,6 +80,7 @@ RayCastResult MeshObject::GetRayCastResult(Vector3f origin, Vector3f direction, 
             }
         }
     }
+    result.mat = GetMaterial(result.materialIndex, result.uv.x, result.uv.y);
 
     return result;
 }

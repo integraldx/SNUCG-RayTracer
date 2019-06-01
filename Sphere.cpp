@@ -44,6 +44,7 @@ namespace snucg
             res.normal = normalize(res.position - GetPosition());
             // ::std::cout << res.normal.x << ", " << res.normal.y << ", " << res.normal.z << ::std::endl;
             res.uv = {0, 0};
+            res.mat = GetMaterial(0, 0, 0);
             return res;
         }
     }

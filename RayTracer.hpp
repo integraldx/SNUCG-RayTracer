@@ -1,5 +1,6 @@
 #pragma once
 #include "Vectorf.hpp"
+#include "Material.hpp"
 
 namespace snucg
 {
@@ -28,6 +29,7 @@ namespace snucg
         Vector3f position;
         Vector3f normal;
         Vector2f uv;
+        Material mat;
     };
 
     int clampTo255(int i);

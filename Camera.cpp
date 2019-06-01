@@ -26,6 +26,7 @@ namespace snucg
                         (float)(j - (width / 2)) * tanf(M_PI * fieldOfView / 360) / (width / 2),
                         (float)((height / 2) - i) * tanf(M_PI * fieldOfView / 360) / (width / 2),
                         -1})),
+                    1,
                     0
                 )));
             }
