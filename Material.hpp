@@ -10,5 +10,6 @@ namespace snucg
         Vector4f diffuse;
         Vector4f specular;
         float shininess;
+        float iof = 1;
     };
 }

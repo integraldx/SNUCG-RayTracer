@@ -6,10 +6,10 @@ namespace snucg
     {
         if (recursionDepth > 10)
         {
-            return {0, 0, 0, 1};
+            return {0.1, 0.1, 0.1, 1};
         }
         RayCastResult res = {false};
-        Vector4f color = {0, 0, 0, 1};
+        Vector4f color = {0.1, 0.1, 0.1, 1};
         std::shared_ptr<Object> o;
         for (auto i : objects)
         {
@@ -23,12 +23,20 @@ namespace snucg
         }
         if (res.collision)
         {
+            auto mat = o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y);
             // color = {0.1, 0.1, 0.1, 1};
             auto pointToOriginDirection = normalize(origin - res.position);
-            if (getScale(o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y).specular) > 3 * epsilon)
+            if (getScale(mat.specular) > 3 * epsilon)
             {
                 auto refl = rayTrace(res.position, 2 * dotProduct(res.normal, pointToOriginDirection) * res.normal - pointToOriginDirection, recursionDepth + 1);
-                color = color + (refl * o->GetMaterial(res.materialIndex, res.uv.x, res.uv.y).specular);
+                color = color + (refl * mat.specular);
+            }
+            if (1 - mat.diffuse.w > epsilon)
+            {
+                float n1 = 1;
+                float n2 = mat.iof;
+                auto refr = rayTrace(res.position, normalize(direction - (n2 - n1) * res.normal), recursionDepth + 1);
+                color = color + (refr * (1 - mat.diffuse.w));
             }
             for (auto j : lights)
             {
