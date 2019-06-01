@@ -41,16 +41,25 @@ namespace snucg
             }
             for (auto j : lights)
             {
-                auto lightPosition = j->getPosition();
-                auto pointToOriginDirection = normalize(origin - res.position);
-                auto pointToLightDirection = normalize(lightPosition - res.position);
+                auto rt = rayTrace(res.position, normalize(j->getPosition() - res.position), ior, recursionDepth + 1);
+                if (getScale(rt - Vector4f{0.1, 0.1, 0.1, 1}) < 10 * epsilon)
+                {
+                    auto lightPosition = j->getPosition();
+                    auto pointToOriginDirection = normalize(origin - res.position);
+                    auto pointToLightDirection = normalize(lightPosition - res.position);
 
-                auto irradiance = clampTo1(dotProduct(pointToLightDirection, res.normal));
-                auto reflectance = clampTo1(dotProduct(
-                    pointToOriginDirection, 
-                    2 * dotProduct(res.normal, pointToLightDirection) * res.normal - pointToLightDirection));
+                    auto irradiance = clampTo1(dotProduct(pointToLightDirection, res.normal));
+                    auto reflectance = clampTo1(dotProduct(
+                        pointToOriginDirection, 
+                        2 * dotProduct(res.normal, pointToLightDirection) * res.normal - pointToLightDirection));
 
-                color = color + Light::phongShade(irradiance, reflectance, mat, j);
+                    color = color + Light::phongShade(irradiance, reflectance, mat, j);
+                }
+                else
+                {
+                    color = color + rt * mat.diffuse * dotProduct(res.normal, normalize(j->getPosition() - res.position));
+                }
+                
             }
         }
         return Vector4f{color.x, color.y, color.z, 1};

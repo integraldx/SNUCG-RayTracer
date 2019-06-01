@@ -12,6 +12,11 @@ namespace snucg
         radius = initialRadius;
     }
 
+    void Sphere::SetTexture(Texture t)
+    {
+
+    }
+
     void Sphere::SetMaterial(Material newMaterial)
     {
         m = newMaterial;
@@ -30,6 +35,12 @@ namespace snucg
         float distance = getScale(newOrigin + (newDirection * shortestT) - GetPosition());
         float interval = ::pow(::pow(radius, 2) - ::pow(distance, 2), 0.5);
         float t = shortestT - interval;
+        bool outside = false;
+        if (getScale(newOrigin - GetPosition()) < distance)
+        {
+            t = shortestT + interval;
+            outside = true;
+        }
         if (distance > radius || t < epsilon || t > minT)
         {
             return RayCastResult{false};
@@ -45,6 +56,10 @@ namespace snucg
             // ::std::cout << res.normal.x << ", " << res.normal.y << ", " << res.normal.z << ::std::endl;
             res.uv = {0, 0};
             res.mat = GetMaterial(0, 0, 0);
+            if (outside)
+            {
+                res.mat.iof = 1;
+            }
             return res;
         }
     }
