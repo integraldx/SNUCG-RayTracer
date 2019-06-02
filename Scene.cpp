@@ -23,10 +23,14 @@ namespace snucg
         }
         if (res.collision)
         {
+            if (dotProduct(res.normal, direction) > 0)
+            {
+                res.normal = -1 * res.normal;
+            }
             auto mat = res.mat;
             // color = {0.1, 0.1, 0.1, 1};
             auto pointToOriginDirection = normalize(origin - res.position);
-            if (getScale(mat.specular) > 3 * epsilon)
+            if (getScale(mat.specular - Vector4f{0, 0, 0, 1}) > 3 * epsilon)
             {
                 auto refl = rayTrace(res.position, 2 * dotProduct(res.normal, pointToOriginDirection) * res.normal - pointToOriginDirection, ior, recursionDepth + 1);
                 color = color + (refl * mat.specular);
@@ -41,25 +45,36 @@ namespace snucg
             }
             for (auto j : lights)
             {
-                auto rt = rayTrace(res.position, normalize(j->getPosition() - res.position), ior, recursionDepth + 1);
-                if (getScale(rt - Vector4f{0.1, 0.1, 0.1, 1}) < 10 * epsilon)
+                auto lightPosition = j->getPosition();
+                auto pointToOriginDirection = normalize(origin - res.position);
+                auto pointToLightDirection = normalize(lightPosition - res.position);
+                if (dotProduct(pointToLightDirection, res.normal) > 0)
                 {
-                    auto lightPosition = j->getPosition();
-                    auto pointToOriginDirection = normalize(origin - res.position);
-                    auto pointToLightDirection = normalize(lightPosition - res.position);
+                    RayCastResult r;
+                    for (auto asdf : objects)
+                    {
+                        auto temp = asdf->GetRayCastResult(res.position, normalize(j->getPosition() - res.position), getScale(j->getPosition() - res.position));
+                        if (temp.collision)
+                        {
+                            r = temp;
+                        }
+                    }
+                    if (!r.collision)
+                    {
 
-                    auto irradiance = clampTo1(dotProduct(pointToLightDirection, res.normal));
-                    auto reflectance = clampTo1(dotProduct(
-                        pointToOriginDirection, 
-                        2 * dotProduct(res.normal, pointToLightDirection) * res.normal - pointToLightDirection));
+                        auto irradiance = clampTo1(dotProduct(pointToLightDirection, res.normal));
+                        auto reflectance = clampTo1(dotProduct(
+                            pointToOriginDirection, 
+                            2 * dotProduct(res.normal, pointToLightDirection) * res.normal - pointToLightDirection));
 
-                    color = color + Light::phongShade(irradiance, reflectance, mat, j);
+                        color = color + Light::phongShade(irradiance, reflectance, mat, j);
+                    }
+                    else
+                    {
+                        color = color + rayTrace(res.position, normalize(j->getPosition() - res.position), ior, recursionDepth + 1) * mat.diffuse;
+                    }
+                    
                 }
-                else
-                {
-                    color = color + rt * mat.diffuse * dotProduct(res.normal, normalize(j->getPosition() - res.position));
-                }
-                
             }
         }
         return Vector4f{color.x, color.y, color.z, 1};
