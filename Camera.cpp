@@ -42,10 +42,10 @@ namespace snucg
             int leftover = height - i + 1;
             auto estimated = afterTime + leftover * delta;
             auto dispTime = std::localtime(&estimated);
-            std::cout << (float)(i * width) / (height * width) * 100 << "%" << std::endl;
+            std::cout << (float)((i + 1) * width) / (height * width) * 100 << "%" << std::endl;
             std::cout << "estimated time : ";
             char buffer[100];
-            std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", dispTime);
+            std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", dispTime);
             std::cout << buffer << endl;;
         }
 

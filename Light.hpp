@@ -28,7 +28,7 @@ namespace snucg
             Vector4f color = {0, 0, 0, 0};
 
             color = color + (m.ambient * l->getAmbient());
-            color = color + diffuseValue * (m.diffuse * l->getDiffuse());
+            color = color + diffuseValue * (m.diffuse * l->getDiffuse()) * m.diffuse.w;
             color = color + ::pow(specularValue, m.shininess) * (m.specular * l->getSpecular());
 
 

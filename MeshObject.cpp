@@ -8,7 +8,7 @@ MeshObject::MeshObject()
 
 }
 
-MeshObject::MeshObject(std::vector<Polygon> mesh, std::vector<Texture> textures)
+MeshObject::MeshObject(std::vector<Polygon> mesh, shared_ptr<vector<Texture>> textures)
 : mesh(mesh), textures(textures)
 {
     // for (auto a : mesh)
@@ -24,7 +24,7 @@ MeshObject::MeshObject(std::vector<Polygon> mesh, std::vector<Texture> textures)
 
 Material MeshObject::GetMaterial(int index, float u, float v)
 {
-    Material m = textures[index].getMaterialFromUV(u, v);
+    Material m = textures->at(index).getMaterialFromUV(u, v);
 
     return m;
 }
@@ -83,4 +83,9 @@ RayCastResult MeshObject::GetRayCastResult(Vector3f origin, Vector3f direction, 
     result.mat = GetMaterial(result.materialIndex, result.uv.x, result.uv.y);
 
     return result;
+}
+
+shared_ptr<vector<Texture>> MeshObject::GetTextures()
+{
+    return textures;
 }

@@ -9,7 +9,7 @@
 using namespace std;
 namespace snucg
 {
-    pair<map<string, int>, vector<Texture>> parseMtl(string filepath)
+    pair<map<string, int>, shared_ptr<vector<Texture>>> parseMtl(string filepath)
     {
         string baseFolder = filepath.substr(0, filepath.find_last_of('/') + 1);
         ifstream mtlFile(filepath);
@@ -19,7 +19,7 @@ namespace snucg
         }
 
         map<string, int> nameMap;
-        vector<Texture> texVector;
+        auto texVector = make_shared<vector<Texture>>();
         string line;
         string matName;
         while(getline(mtlFile, line))
@@ -30,13 +30,13 @@ namespace snucg
             if (command.compare("newmtl") == 0)
             {
                 ss >> matName;
-                nameMap.insert(make_pair(matName, texVector.size()));
+                nameMap.insert(make_pair(matName, texVector->size()));
             }
             else if (command.compare("map_Kd") == 0)
             {
                 string texName;
                 ss >> texName;
-                texVector.push_back(Texture::textureFromPng(baseFolder + texName));
+                texVector->push_back(Texture::textureFromPng(baseFolder + texName));
             }
             else if (command.compare("Ka") == 0)
             {
@@ -45,7 +45,7 @@ namespace snucg
                 {
                     ss >> f[i];
                 }
-                texVector.at(nameMap.at(matName)).setAmbient({f[0], f[1], f[2], 1});
+                texVector->at(nameMap.at(matName)).setAmbient({f[0], f[1], f[2], 1});
             }
             else if (command.compare("Kd") == 0)
             {
@@ -54,7 +54,7 @@ namespace snucg
                 {
                     ss >> f[i];
                 }
-                texVector.at(nameMap.at(matName)).setDiffuse({f[0], f[1], f[2], 1});
+                texVector->at(nameMap.at(matName)).setDiffuse({f[0], f[1], f[2], 1});
             }
             else if (command.compare("Ks") == 0)
             {
@@ -63,13 +63,13 @@ namespace snucg
                 {
                     ss >> f[i];
                 }
-                texVector.at(nameMap.at(matName)).setSpecular({f[0], f[1], f[2], 1});
+                texVector->at(nameMap.at(matName)).setSpecular({f[0], f[1], f[2], 1});
             }
             else if (command.compare("Ns") == 0)
             {
                 float f;
                 ss >> f;
-                texVector.at(nameMap.at(matName)).setShininess(f);
+                texVector->at(nameMap.at(matName)).setShininess(f);
             }
         }
         cout << "MTL parsing done" << endl;
@@ -90,7 +90,7 @@ namespace snucg
         vector<Vector3f> normalV;
 
         vector<Polygon> polygonV;
-        pair<map<string, int>, vector<Texture>> texPair;
+        pair<map<string, int>, shared_ptr<vector<Texture>>> texPair;
         string line;
         string currentMtlName;
         while(getline(objFile, line))
@@ -120,7 +120,7 @@ namespace snucg
             {
                 float x, y, z;
                 ss >> x >> y >> z;
-                normalV.push_back({x, y, z});
+                normalV.push_back(normalize(Vector3f{x, y, z}));
             }
             else if (command.compare("f") == 0)
             {

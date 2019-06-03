@@ -38,6 +38,11 @@ Vector4f Texture::getColorFromUV(float u, float v)
     return Vector4f{(float)pix.red / 255, (float)pix.green / 255, (float)pix.blue / 255, 1};
 }
 
+void Texture::setIor(float f)
+{
+    ior = f;
+}
+
 Material Texture::getMaterialFromUV(float u, float v)
 {
     Material m;
@@ -46,6 +51,7 @@ Material Texture::getMaterialFromUV(float u, float v)
     // printf("%f, %f, %f\n", m.diffuse.x, m.diffuse.y, m.diffuse.z);
     m.specular = specular;
     m.shininess = shininess;
+    m.iof = ior;
     return m;
 }
 
