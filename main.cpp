@@ -34,24 +34,24 @@ int main()
         o->SetScale({10, 10, 10});
         sc.objects.push_back(o);
     }
-    // {
-    //     auto o = make_shared<Sphere>(7);
-    //     o->SetPosition({0, 0, -2});
-    //     Material m = {
-    //         {0, 0, 0, 0},
-    //         {0.2, 0.2, 0.2, 0.1},
-    //         {0.2, 0.2, 0.2, 1},
-    //         10,
-    //         0.6
-    //     };
-    //     o->SetMaterial(m);
-    //     sc.objects.push_back(o);
-    // }
+    {
+        auto o = make_shared<Sphere>(7);
+        o->SetPosition({-10, 0, -5});
+        Material m = {
+            {0, 0, 0, 0},
+            {0.2, 0.2, 0.2, 0.1},
+            {0.2, 0.2, 0.2, 1},
+            10,
+            0.6
+        };
+        o->SetMaterial(m);
+        sc.objects.push_back(o);
+    }
     {
         auto o = parseObj("Scene/Gem/gem.obj");
-        o->SetPosition({0, -5, 0});
-        o->SetScale({5, 10, 5});
-        o->GetTextures()->at(0).setDiffuse({0.3, 0.3, 0.3, 0.2});
+        o->SetPosition({3, -10, -5});
+        o->SetScale({10, 10, 10});
+        o->GetTextures()->at(0).setDiffuse({0.3, 0.3, 0.4, 0.2});
         o->GetTextures()->at(0).setIor(1.3);
         o->translucent = true;
         sc.objects.push_back(o);
@@ -69,7 +69,7 @@ int main()
     Camera cam;
     cam.SetPosition({0, 10, 20});
     cam.SetRotation(expToQuat(M_PI * 0.175, {-1, 0, 0}));
-    auto i = cam.evaluateImage(500, 500, sc);
+    auto i = cam.evaluateImage(3000, 3000, sc);
     i.write("result.png");
     return 0;
 }

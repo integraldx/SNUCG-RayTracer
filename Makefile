@@ -1,5 +1,5 @@
 raytracer: *.cpp *.hpp
-	g++ -c *.cpp `libpng-config --cflags`
+	g++ -c -std=c++17 *.cpp `libpng-config --cflags`
 	g++ -o raytracer *.o `libpng-config --ldflags` -lpthread
 
 run: raytracer
